@@ -1,6 +1,12 @@
 
 extends include/layout
 block content
+	.level
+		.level-left
+			p Displaying #{limit} out of #{total} nodes
+		.level-right
+			p.is-italic node #{start} to #{end}
+
 	.box.has-background-white.is-paddingless
 		table.table.is-striped.is-fullwidth.is-size-5
 			thead.has-background-light
@@ -17,8 +23,7 @@ block content
 			tbody
 				each node in nodes
 					tr
-						th.has-text-centered
-							a.is-link(href='http://' + node.ip + ':' + node.port)=node.ip + ':' + node.port
+						th.has-text-centered=node.ip + ':' + node.port
 						th.has-text-centered.has-text-weight-light=node.region
 						th.has-text-centered.has-text-weight-light=node.country
 						th.has-text-centered.has-text-weight-light=node.seen
