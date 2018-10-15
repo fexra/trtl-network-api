@@ -1,5 +1,11 @@
 
 extends include/layout
 block content
+	.level
+		.level-left
+			a.is-link.has-text-weight-bold(href='/list') Displaying #{total} nodes
+		.level-right
+			p.is-italic updated #{updated}
+
 	.box.has-background-white.is-paddingless
 		#map(style='width: 100%; height: 600px;')

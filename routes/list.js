@@ -38,6 +38,9 @@ router.get('/:start/:end', async function (req, res, next) {
 		.limit(limit)
 		.offset(start)
 
+		const countNodes = await db('nodes')
+		.count('* as count')
+
 		getNodes.forEach(function(node) {
 			node.seen = moment(node.seen).fromNow()
 		})
@@ -45,7 +48,11 @@ router.get('/:start/:end', async function (req, res, next) {
 		res.render('list', {
 			nodes: getNodes,
 			next: next,
-			prev: prev
+			prev: prev,
+			start: start,
+			end: end,
+			limit: limit,
+			total: countNodes[0].count
 		})
 	}
 	catch(err) {
