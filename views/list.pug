@@ -1,0 +1,33 @@
+
+extends include/layout
+block content
+	.box.has-background-white.is-paddingless
+		table.table.is-striped.is-fullwidth.is-size-5
+			thead.has-background-light
+				tr
+					th.has-text-centered
+						abbr(title='Address') Address
+					th.has-text-centered
+						abbr(title='Region') Region
+					th.has-text-centered
+						abbr(title='Country') Country
+					th.has-text-centered
+						abbr(title='Seen') Seen
+
+			tbody
+				each node in nodes
+					tr
+						th.has-text-centered
+							a.is-link(href='http://' + node.ip + ':' + node.port)=node.ip + ':' + node.port
+						th.has-text-centered.has-text-weight-light=node.region
+						th.has-text-centered.has-text-weight-light=node.country
+						th.has-text-centered.has-text-weight-light=node.seen
+
+		if nodes && nodes.length <= 0
+			p.has-text-centered
+				| No nodes found yet.
+			br
+	nav.pagination.is-centered.is-medium(role='navigation', aria-label='pagination')
+		a.pagination-previous.has-background-white(href='/list/' + prev) Previous
+		a.pagination-next.has-background-white(href='/list/' + next) Next
+			
