@@ -4,7 +4,7 @@ Simple Node.JS project that grabs known peers from a pre selected list of nodes 
 
 ## Requirements
 - Node.Js 8+
-- SQLite
+- SQLite 3
 
 ## Credits
 
