@@ -7,7 +7,7 @@ const cron = require('node-cron');
 const db = require('../utils/knex')
 const axios = require('axios')
 const geoip = require('geoip-lite')
-const check = require('is-reachable')
+
 try {
     cron.schedule('*/10 * * * *', async function() {
 
