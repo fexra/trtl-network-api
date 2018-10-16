@@ -6,11 +6,11 @@
 const knex = module.exports = require('knex')({
     client: 'pg',
     connection: {
-        host : '127.0.0.1',
-        port: 5432,
-        user : 'fexra',
-        password : '8761',
-        database : 'fexra'
+        host : process.env.DB_HOST,
+        port: process.env.DB_PORT,
+        user : process.env.DB_USER,
+        password : process.env.DB_PASS,
+        database : process.env.DB_NAME
       }
 })
 
