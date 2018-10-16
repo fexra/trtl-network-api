@@ -4,10 +4,14 @@
 'use strict'
 
 const knex = module.exports = require('knex')({
-    client: 'sqlite3',
+    client: 'pg',
     connection: {
-        filename: './db/nodes.db'
-    }
+        host : '127.0.0.1',
+        port: 5432,
+        user : 'fexra',
+        password : '8761',
+        database : 'fexra'
+      }
 })
 
 module.exports = knex

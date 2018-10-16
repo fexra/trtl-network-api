@@ -42,7 +42,7 @@ router.get('/:start/:end', async function (req, res, next) {
 		.count('* as count')
 
 		getNodes.forEach(function(node) {
-			node.seen = moment(node.seen).fromNow()
+			node.seen = moment(+node.seen).fromNow()
 		})
 	
 		res.render('list', {

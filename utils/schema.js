@@ -10,15 +10,17 @@ db.schema.hasTable('nodes').then(function(exists) {
     if (!exists) {
       return db.schema.createTable('nodes', function(table) {
         table.increments()
-        table.unique('ip')
-        table.string('ip')
-        table.integer('port')
+        table.unique('address')
+        table.string('address')
+        table.jsonb('peers')
+        table.boolean('public')
         table.string('country')
         table.string('region')
         table.string('city')
-        table.json('coordinates')
-        table.datetime('seen')
-        table.datetime('created')
+        table.jsonb('coordinates')
+        table.jsonb('trail')
+        table.bigint('seen')
+        table.bigint('created')
     })
   }
 })

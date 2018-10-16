@@ -12,6 +12,7 @@ const Compression = require('compression')
 const favicon = require('serve-favicon')
 const path = require('path')
 const logger = require('morgan')
+const fs = require('fs')
 
 // Compress
 app.use(Helmet())
@@ -27,7 +28,7 @@ app.set('view engine', 'pug')
 
 app.use(logger('dev'))
 
-//Set SChema
+//Set Schema
 require('./utils/schema')
 
 //Routes
@@ -36,7 +37,6 @@ const list = require('./routes/list')
 
 app.use('/', map)
 app.use('/list', list)
-
 
 //Load script
 require('./scripts/findNodes')
@@ -47,9 +47,7 @@ app.use(function onError (err, req, res, next) {
   res.locals.message = err.message
   res.locals.error = process.env.DEBUG == true ? err : {}
   res.statusCode = err.status || 500
-
   res.render(err)
-
 })
 
 module.exports = app

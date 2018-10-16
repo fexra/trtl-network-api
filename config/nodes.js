@@ -4,13 +4,6 @@
 'use strict'
 
 module.exports = [ 
-    'http://public.turtlenode.io:11898',
-    'http://asia.turtlenode.io:11898',
-    'http://japakar.turtle.com:11898',
-    'http://sewer.turtlecoin.club:11898',
-    'http://node.turtlecoin.club:11898',
-    'http://val.turtlenode.online:11898',
-    'http://public.turtlenode.net:11898',
-    'http://europe.turtlenode.io:11898',
-    'http://turtle.land:11898'   
+    'http://127.0.0.1:11898',
+    null   
 ]
