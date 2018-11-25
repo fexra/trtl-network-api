@@ -19,6 +19,7 @@ router.get('/peers', async function (req, res, next) {
 
 		getNodes.forEach(function(node) {
 			node.peers = JSON.parse(node.peers)
+			node.coordinates = JSON.parse(node.coordinates)
 			node.seen = moment(node.seen).fromNow()
 		})
 

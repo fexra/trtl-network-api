@@ -3,13 +3,12 @@
 // Please see the included LICENSE file for more information.
 'use strict'
 
-const cron = require('node-cron');
 const db = require('../utils/knex')
 const axios = require('axios')
 const geoip = require('geoip-lite')
 
 try {
-    cron.schedule('*/1 * * * *', async function() {
+    setInterval(function() {
 
         let knownNodes
         const getNodes = await db('nodes')
@@ -47,7 +46,7 @@ try {
                     var peerIp = peer.split(':')[0]
                     var peerPort = peer.split(':')[1]
                     var peerRpc = 'http://' + peerIp + ':' + (+peerPort + 1 + '/getinfo')
-                    var peerGeo = await geoip.lookup(peerIp)
+                    var geo = await geoip.lookup(peerIp)
 
                     try {
                         const peerCheck =  await axios.get(peerRpc)
@@ -61,22 +60,23 @@ try {
                         available = false
                     }
 
+
                     var data = [
                         peer,
                         JSON.stringify(peers),
                         available,
-                        peerGeo.country,
-                        peerGeo.region,
-                        peerGeo.city,
-                        JSON.stringify(peerGeo.ll),
+                        geo.country,
+                        geo.region,
+                        geo.city,
+                        JSON.stringify(geo.ll),
                         Date.now(),
                         Date.now(),
                         JSON.stringify(peers),
                         available,
-                        peerGeo.country,
-                        peerGeo.region,
-                        peerGeo.city,
-                        JSON.stringify(peerGeo.ll),
+                        geo.country,
+                        geo.region,
+                        geo.city,
+                        JSON.stringify(geo.ll),
                         Date.now()
                     ]
                     console.log(data)
@@ -89,7 +89,7 @@ try {
 
             }
         })
-    })
+    }, 3000)
 }
 catch(err) {
      console.error(err)
