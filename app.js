@@ -32,11 +32,9 @@ app.use(logger('dev'))
 require('./utils/schema')
 
 //Routes
-const map = require('./routes/map')
-const list = require('./routes/list')
+const index = require('./routes/index')
 
-app.use('/', map)
-app.use('/list', list)
+app.use('/', index)
 
 //Load script
 require('./scripts/findNodes')

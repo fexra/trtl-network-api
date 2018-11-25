@@ -59,6 +59,7 @@ try {
                         available = false
                     }
 
+                    console.log(available)
                     var data = [
                         peer,
                         JSON.stringify(getPeers.data.peers),

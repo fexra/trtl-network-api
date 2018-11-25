@@ -1,6 +1,6 @@
-# TRTL Node Tracker
+# TRTL Network Tracker
 
-Simple Node.JS project that grabs known peers from a pre selected list of nodes and processes and stores the data in a local sqlite db for display.
+Simple Node.JS project that grabs known peers from the network and processes geographic location and  stores the data in a local sqlite db and routes it to and end point.
 
 ## Requirements
 - Node.Js 8+
