@@ -15,7 +15,7 @@ setInterval(function() {
 async function getPeers() {
     let knownNodes
 
-    const geNodes = await db('nodes')
+    const getNodes = await db('nodes')
     .select()
     .where('available', true)
 
