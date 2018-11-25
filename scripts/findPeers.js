@@ -36,8 +36,8 @@ try {
                     peers.push(peer)
                 })
 
-                // Store only 5
-                peers = peers.slice(0, 5)
+                // Store only 2
+                peers = peers.slice(0, 2)
 
     
                 peers.forEach(async function(peer) {
