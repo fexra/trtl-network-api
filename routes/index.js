@@ -14,11 +14,12 @@ router.get('/peers', async function (req, res, next) {
 		const end = moment().valueOf()
 
 		const getNodes = await db('nodes')
-		.select('address', 'coordinates', 'seen',)
+		.select('address', 'peers', 'coordinates', 'seen',)
 		.whereBetween('seen', [+start, +end])
 
 		getNodes.forEach(function(node) {
-			node.seen = moment(+node.seen).fromNow()
+			node.peers = JSON.parse(node.peers)
+			node.seen = moment(node.seen).fromNow()
 		})
 
 		res.status(200).json(getNodes)
