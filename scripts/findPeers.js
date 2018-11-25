@@ -7,29 +7,34 @@ const db = require('../utils/knex')
 const axios = require('axios')
 const geoip = require('geoip-lite')
 
-try {
-    setInterval(async function() {
 
-        let knownNodes
-        const getNodes = await db('nodes')
-        .select()
-        .where('available', true)
+setInterval(function() {
+    getPeers()
+}, 1000)
 
-        // Bootstrap this bitch
-        if(getNodes.length >= 1) {
-            knownNodes = getNodes
-        } else {
-            knownNodes = [
-                '145.131.30.157:11897',
-                'public.turtlenode.io:11897'
-            ]
-        }
+async function getPeers() {
+    let knownNodes
 
-        knownNodes.forEach(async function(node) {
+    const getNodes = await db('nodes')
+    .select()
+    .where('available', true)
 
+    // Bootstrap this bitch
+    if(getNodes.length >= 1) {
+        knownNodes = getNodes
+    } else {
+        knownNodes = [
+            '145.131.30.157:11898',
+            'public.turtlenode.io:11898'
+        ]
+    }
+
+    knownNodes.forEach(async function(node) {
+console.log(node)
+        try {
+            
             // Grab other peers 
-            var rpcAddress = 'http://' + node.split(':')[0] + ':' + (+node.split(':')[1] + 1)
-            var getPeers = await axios.get(rpcAddress + '/getpeers')
+            var getPeers = await axios.get('http://' + node + '/getpeers')
             var peers = []
 
             getPeers.data.peers.forEach(async function(peer) {
@@ -39,17 +44,15 @@ try {
             // select two random peers and store
             peers = peers.sort(() => .5 - Math.random()).slice(0, 2)
 
-
             peers.forEach(async function(peer) {
 
-                let available
-                var peerIp = peer.split(':')[0]
-                var peerPort = peer.split(':')[1]
-                var peerRpc = 'http://' + peerIp + ':' + (+peerPort + 1 + '/getinfo')
+    
+                var peerRpc = 'http://' + node + '/getinfo'
                 var geo = await geoip.lookup(peerIp)
                 
                 try {
-                    const peerCheck =  await axios.get(peerRpc)
+                    let available
+                    var peerCheck =  await axios.get(peerRpc)
                     if(peerCheck.status === 200) {
                         available = true
                     } else {
@@ -79,13 +82,13 @@ try {
                     JSON.stringify(geo.ll),
                     Date.now()
                 ]
+
                 console.log(data)
 
                 await db.raw('INSERT INTO nodes (address, peers, available, country, region, city, coordinates, seen, created) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?) ON CONFLICT (address) DO UPDATE SET peers = ?, available = ?, country = ?, region = ?, city = ?, coordinates = ?, seen = ?', data)
             })
-        })
-    }, 60000)
-}
-catch(err) {
-     console.error(err)
+        }
+        catch(err) {
+        }
+    })
 }
