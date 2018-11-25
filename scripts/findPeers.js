@@ -59,10 +59,9 @@ try {
                         available = false
                     }
 
-                    console.log(available)
                     var data = [
                         peer,
-                        JSON.stringify(getPeers.data.peers),
+                        JSON.stringify(getPeers.data.peers.slice(0, 3)),
                         available,
                         peerGeo.country,
                         peerGeo.region,

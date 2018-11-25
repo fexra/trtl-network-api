@@ -21,11 +21,10 @@ router.get('/peers', async function (req, res, next) {
 			node.seen = moment(+node.seen).fromNow()
 		})
 
-		res.json(getNodes)
+		res.status(200).json(getNodes)
 	}
 	catch(err) {
-		res.json(null)
-		console.log(err)
+		res.status(err.status).json(err.message)
 	}
 })
 

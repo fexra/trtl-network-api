@@ -9,10 +9,8 @@ const app = express()
 const bodyParser = require('body-parser')
 const Helmet = require('helmet')
 const Compression = require('compression')
-const favicon = require('serve-favicon')
 const path = require('path')
 const logger = require('morgan')
-const fs = require('fs')
 
 // Compress
 app.use(Helmet())
@@ -21,11 +19,6 @@ app.use(Compression())
 //Set Parsers/Path/Favicon/Templates
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
-app.use(express.static(path.join(__dirname, 'public')))
-app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')))
-app.set('views', path.join(__dirname, 'views'))
-app.set('view engine', 'pug')
-
 app.use(logger('dev'))
 
 //Set Schema
@@ -45,7 +38,7 @@ app.use(function onError (err, req, res, next) {
   res.locals.message = err.message
   res.locals.error = process.env.DEBUG == true ? err : {}
   res.statusCode = err.status || 500
-  res.render(err)
+  res.status(500).json(err)
 })
 
 module.exports = app
