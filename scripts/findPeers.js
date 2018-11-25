@@ -60,7 +60,6 @@ async function getPeers() {
                     }
                 }
                 catch(err) {
-                    available = false
                 }
 
 
