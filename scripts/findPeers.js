@@ -47,7 +47,8 @@ async function getPeers() {
                 let available = false
 
                 var peerIp = peer.split(':')[0]
-                var peerRpc = 'http://' + peer + '/getinfo'
+                var peerPort = peer.split(':')[1]
+                var peerRpc = 'http://' + peerIp + ':' + (+peerPort + 1 + '/getinfo')
                 var peerIp = peer.split(':')[0]
                 var geo = await geoip.lookup(peerIp)
                 
@@ -60,6 +61,7 @@ async function getPeers() {
                     }
                 }
                 catch(err) {
+                    available = false
                 }
 
 
