@@ -16,15 +16,24 @@ const logger = require('morgan')
 app.use(Helmet())
 app.use(Compression())
 
-//Set Parsers/Path/Favicon/Templates
+// Set Parsers
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(logger('dev'))
 
-//Set Schema
+// Set Schema
 require('./utils/schema')
 
-//Routes
+// CORS
+
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
+
+
+// Routes
 const index = require('./routes/index')
 
 app.use('/', index)
