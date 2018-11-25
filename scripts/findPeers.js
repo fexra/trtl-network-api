@@ -10,7 +10,7 @@ const geoip = require('geoip-lite')
 
 setInterval(function() {
     getPeers()
-}, 60000)
+}, 6000)
 
 async function getPeers() {
     let knownNodes
@@ -24,8 +24,8 @@ async function getPeers() {
         knownNodes = getNodes
     } else {
         knownNodes = [
-            { address: '145.131.30.157:11898' },
-            { address: 'public.turtlenode.io:11898' }
+            { address: '145.131.30.157:11897' },
+            { address: 'public.turtlenode.io:11897' }
         ]
     }
 
@@ -33,7 +33,8 @@ async function getPeers() {
         try {
             
             // Grab other peers 
-            var getPeers = await axios.get('http://' + node.address + '/getpeers')
+            var rpcAddress = 'http://' + node.address.split(':')[0] + ':' + (+node.address.split(':')[1] + 1)
+            var getPeers = await axios.get(rpcAddress + '/getpeers')
             var peers = []
 
             getPeers.data.peers.forEach(async function(peer) {
@@ -44,8 +45,8 @@ async function getPeers() {
             peers = peers.sort(() => .5 - Math.random()).slice(0, 2)
 
             peers.forEach(async function(peer) {
-                let available = false
 
+                let available = false
                 var peerIp = peer.split(':')[0]
                 var peerPort = peer.split(':')[1]
                 var peerRpc = 'http://' + peerIp + ':' + (+peerPort + 1 + '/getinfo')
@@ -53,7 +54,7 @@ async function getPeers() {
                 var geo = await geoip.lookup(peerIp)
                 
                 try {
-                    var peerCheck =  await axios.get(peerRpc)
+                    const peerCheck =  await axios.get(peerRpc)
                     if(peerCheck.status === 200) {
                         available = true
                     } else {
