@@ -10,12 +10,12 @@ const geoip = require('geoip-lite')
 
 setInterval(function() {
     getPeers()
-}, 6000)
+}, 1000)
 
 async function getPeers() {
     let knownNodes
 
-    const getNodes = await db('nodes')
+    const geNodes = await db('nodes')
     .select()
     .where('available', true)
 
