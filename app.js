@@ -9,7 +9,6 @@ const app = express()
 const bodyParser = require('body-parser')
 const Helmet = require('helmet')
 const Compression = require('compression')
-const path = require('path')
 const logger = require('morgan')
 
 // Compress
