@@ -10,7 +10,7 @@ const geoip = require('geoip-lite')
 
 setInterval(function() {
     getPeers()
-}, 1000)
+}, 60000)
 
 async function getPeers() {
     let knownNodes
