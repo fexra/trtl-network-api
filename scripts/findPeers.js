@@ -8,7 +8,7 @@ const axios = require('axios')
 const geoip = require('geoip-lite')
 
 try {
-    setInterval(function() {
+    setInterval(async function() {
 
         let knownNodes
         const getNodes = await db('nodes')
