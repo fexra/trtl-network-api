@@ -30,7 +30,7 @@ const index = require('./routes/index')
 app.use('/', index)
 
 //Load script
-require('./scripts/findNodes')
+require('./scripts/findPeers')
 
 // error handler
 app.use(function onError (err, req, res, next) {

@@ -9,13 +9,14 @@ const axios = require('axios')
 const geoip = require('geoip-lite')
 
 try {
-    cron.schedule('*/10 * * * *', async function() {
+    cron.schedule('*/1 * * * *', async function() {
 
         let knownNodes
         const getNodes = await db('nodes')
         .select()
-        .where('public', true)
+        .where('available', true)
 
+        // Bootstrap this bitch
         if(getNodes.length >= 1) {
             knownNodes = getNodes
         } else {
@@ -24,20 +25,21 @@ try {
 
         knownNodes.forEach(async function(node) {
 
+            // Grab other peers 
             const rpcAddress = 'http://' + node.address.split(':')[0] + ':' + (+node.address.split(':')[1] + 1)
 
             try {
                 const getPeers = await axios.get(rpcAddress + '/getpeers')
 
-                const peers = []
+                var peers = []
     
                 getPeers.data.peers.forEach(async function(peer) {
                     peers.push(peer)
                 })
 
-                //getPeers.data.gray_peers.forEach(async function(peer) {
-                //    peers.push(peer)
-                //})
+                // Store only 5
+                peers = peers.slice(0, 5)
+
     
                 peers.forEach(async function(peer) {
 
@@ -61,25 +63,24 @@ try {
 
                     var data = [
                         peer,
-                        JSON.stringify(getPeers.data.peers.slice(0, 3)),
+                        JSON.stringify(peers),
                         available,
                         peerGeo.country,
                         peerGeo.region,
                         peerGeo.city,
                         JSON.stringify(peerGeo.ll),
-                        JSON.stringify(node.address),
                         Date.now(),
                         Date.now(),
-                        JSON.stringify(getPeers.data.peers),
+                        JSON.stringify(peers),
+                        available,
                         peerGeo.country,
                         peerGeo.region,
                         peerGeo.city,
                         JSON.stringify(peerGeo.ll),
-                        JSON.stringify(node.address),
                         Date.now()
                     ]
     
-                    await db.raw('INSERT INTO nodes (address, peers, public, country, region, city, coordinates, trail, seen, created) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ON CONFLICT (address) DO UPDATE SET peers = ?, country = ?, region = ?, city = ?, coordinates = ?, trail = nodes.trail || ?::JSONB, seen = ?', data)
+                    await db.raw('INSERT INTO nodes (address, peers, available, country, region, city, coordinates, seen, created) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ON CONFLICT (address) DO UPDATE SET peers = ?, available = ?, country = ?, region = ?, city = ?, coordinates = ?, seen = ?', data)
                 })
             }
             catch(err) {
@@ -90,5 +91,5 @@ try {
     })
 }
 catch(err) {
-//   console.log(err)
+     console.error(err)
 }
