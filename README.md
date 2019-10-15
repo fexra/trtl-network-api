@@ -1,11 +1,7 @@
-# TRTL Network Tracker
+# TurtleCoin Peer Tracker
 
-Simple Node.JS project that grabs known peers from the network and processes geographic location and  stores the data in a local sqlite db and routes it to and end point.
+Simple script that grabs all known nodes and its peers from the network. 
 
 ## Requirements
 - Node.Js 8+
 - SQLite 3
-
-## Credits
-
-- Fexra

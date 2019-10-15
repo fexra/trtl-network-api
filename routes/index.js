@@ -6,8 +6,6 @@
 const express = require('express')
 const router = express.Router()
 const db = require('../utils/knex')
-const moment = require('moment')
-
 
 router.get('/peers', async function (req, res, next) {
 	try {
