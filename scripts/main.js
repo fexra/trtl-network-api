@@ -5,15 +5,15 @@
 'use strict'
 
 const moment = require('moment')
+const cron = require('node-cron');
 const DB = require('../lib/db')
 const Network = require('../lib/network')
 
 const db = new DB()
 const network = new Network()
 
-
-async function t() {
-
+// look for new nodes and peers every 24 hours
+cron.schedule('0 * * * *', async () => {
     // insert seed node - it has to start somewhere
     let seedNode = '145.131.30.157:11897'
     let checkSeed = await db.fetchNodes()
@@ -23,7 +23,6 @@ async function t() {
     }
  
   // Get all stored nodes that have been last seen 24 hours +
-  let cutoff = moment().subtract('1', 'minute').valueOf()
   let storedNodes = await db.fetchNodes() 
 
   // collect peer node for each stored node
@@ -48,9 +47,10 @@ async function t() {
       })
     }
   })
+})
 
- /*
-  // locate all nodes seen 24 hours or more
+  // locate all nodes seen 24 hours or later
+cron.schedule('0 0 * * *', async () => {
   let cutoff = moment().subtract('1', 'day').valueOf()
   let oldNodes = await db.fetchNodes(cutoff)
 
@@ -59,8 +59,6 @@ async function t() {
     await db.updateNodeGeo(node.address, nodeGeo)
     console.log('located node ' + node.address)
   })
+})
 
-  */
-}
 
-//t()
