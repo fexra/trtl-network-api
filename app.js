@@ -37,7 +37,10 @@ const index = require('./routes/index')
 app.use('/', index)
 
 //Load script
-require('./scripts/findPeers')
+
+setTimeout(function() {
+  require('./scripts/main')
+ }, 1000);
 
 // error handler
 app.use(function onError (err, req, res, next) {

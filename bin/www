@@ -3,7 +3,7 @@ const app = require('../app')
 const debug = require('debug')('engine:server')
 const http = require('http')
 
-const port = normalizePort(process.env.APP_PORT || '8080')
+const port = normalizePort(process.env.APP_PORT || '8082')
 app.set('port', port)
 
 const server = http.createServer(app)
@@ -48,11 +48,11 @@ function onError(error) {
   // handle specific listen errors with friendly messages
   switch (error.code) {
     case 'EACCES':
-      console.error(bind + ' requires elevated privileges')
+      console.erroror(bind + ' requires elevated privileges')
       process.exit(1)
       break
     case 'EADDRINUSE':
-      console.error(bind + ' is already in use')
+      console.erroror(bind + ' is already in use')
       process.exit(1)
       break
     default:

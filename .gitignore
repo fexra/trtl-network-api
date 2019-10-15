@@ -1,4 +1,4 @@
-peers.sqlite
+cache.sqlite
 /node_modules
 .env
 .env.save
