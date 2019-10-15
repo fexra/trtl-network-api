@@ -1,4 +1,4 @@
-// Copyright (c) 2018, Fexra, The TurtleCoin Developers
+// Copyright (c) 2018-2019, Fexra, The TurtleCoin Developers
 //
 // Please see the included LICENSE file for more information.
 'use strict'
@@ -8,25 +8,40 @@ const router = express.Router()
 const db = require('../utils/knex')
 const moment = require('moment')
 
+
 router.get('/peers', async function (req, res, next) {
 	try {
-		const start = moment().subtract('1', 'day').valueOf()
-		const end = moment().valueOf()
 
-		const getNodes = await db('nodes')
-		.select('peers', 'coordinates')
-		.whereBetween('seen', [+start, +end])
+		let getNodes = db('nodes').select() 
 
-		getNodes.forEach(function(node) {
-			node.peers = JSON.parse(node.peers)
-			node.coordinates = JSON.parse(node.coordinates)
+		let dataSet = []
+		getNodes.map(async node => {
+			let data = {
+				node: node.address,
+				peers: []
+			}
+
+			let getPeers = await db('links')
+			.join('nodes', 'links.to', 'nodes.id')
+			.select('nodes.address')
+			.where('links.from', '=', node.id)
+		
+			getPeers.map(async peer => {
+				data.peers.push(peer.address)
+			})
+
+			dataSet.push(data)
 		})
 
-		res.status(200).json(getNodes)
+		setTimeout(function() {
+			res.status(200).json(dataSet)
+		}, 2000);
+		
 	}
 	catch(err) {
-		res.status(err.status).json(err.message)
+		res.status(500).json(err.message)
 	}
 })
+
 
 module.exports = router
